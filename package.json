@@ -1,0 +1,26 @@
+{
+  "name": "diggiepets-local-server-gui",
+  "version": "1.0.0",
+  "description": "Local server and GUI for the diggiepets-project. Contains QR-reading functionality using Node.js and a GUI made with HTML, CSS &amp; JavaScript and the Socket.io-module for real-time updating.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Simlar94/diggiepets-local-server-gui.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Simlar94/diggiepets-local-server-gui/issues"
+  },
+  "homepage": "https://github.com/Simlar94/diggiepets-local-server-gui#readme",
+  "dependencies": {
+    "express": "^4.17.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0",
+    "zbar": "0.0.4"
+  }
+}
