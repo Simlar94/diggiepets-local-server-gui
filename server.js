@@ -14,7 +14,6 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-
 // QR-reading for "leaving" and "retrieving" the diggiepets from the GUI.
 const Zbar = require("zbar");
 zbar = new Zbar("/dev/video0");
@@ -28,13 +27,16 @@ zbar.stdout.on("data", function (buf) {
 
     // Post request with the attached stringified QR-code. 
     request.post({
-        url: "https://digital-pet.herokuapp.com/check-qr",
+        url: "https://diggiepet.herokuapp.com/check/qr",
+        headers: {
+            Authorization: "Basic ZGlnZ2llcGV0X2FkbWluOmRpZ2dpZXBldDEyMzQ1Njc4OTA="
+        },
         form: {
-            "qr_code": fixedString
+            "qr_code": "W1GGVUBljy1558438809838"
         }
     }, function (err, response, body) {
-        var obj = JSON.parse(body); //Parses the response (body) to a JSON-object, stores it in the variable "obj".
-        
+        var obj = JSON.parse(body); // Parses the response (body) to a JSON-object, stores it in the variable "obj".
+
         // If-statement containing another if-statement, executes code block depending on the server response.
         if (!err) {
             // If-statement with different conditions depending on the value of the "status"-key in the responded object.
@@ -57,10 +59,14 @@ var test = true;
 
 if (test === true) {
     request.post({
-        url: "https://digital-pet.herokuapp.com/check-qr",
+        url: "https://diggiepet.herokuapp.com/check/qr",
+        headers: {
+            Authorization: "Basic ZGlnZ2llcGV0X2FkbWluOmRpZ2dpZXBldDEyMzQ1Njc4OTA="
+        },
         form: {
-            "qr_code": "gNOpqBDwJv1555327755998"
+            "qr_code": "W1GGVUBljy1558438809838"
         }
+
     }, function (err, response, body) {
         if (!err) {
             test = false;

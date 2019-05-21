@@ -1,160 +1,4 @@
-var socket = io();
-
-socket.on("deliverPet", function (data) {
-    //Fixa: Om device_id redan finns i arrayen - gör inget - annars pusha datan till arrayen? Onödigt?
-
-    var fakeObj1 = {
-        status: "deliver",
-        pet_type: "dp3s",
-        name: "Sven",
-        device_id: "dev531"
-    };
-
-    var fakeObj2 = {
-        status: "deliver",
-        pet_type: "dp2s",
-        name: "Olle",
-        device_id: "dev731"
-    };
-
-    var deviceIdArray = [];
-
-    deviceIdArray.push(data); //pushes data into the array.
-
-
-    //For-loop for looping out divs with JSON-data with random coordinates inside the body.
-    for (var i = 0; i < deviceIdArray.length; i++) {
-        console.log(deviceIdArray[i]);
-
-
-        //Gets the width and height of the browser-window.
-        var windowWidth = $(window).width();
-        var windowHeight = $(window).height();
-
-        /*Generates random height and width coordinates of the window
-        and subtracts the size of the div so it doesn't spawn outside the visible browser-window*/
-        var left = Math.floor(Math.random() * (windowWidth - 200));
-        var top = Math.floor(Math.random() * (windowHeight - 250));
-
-
-        //Automatically gets the width and height of the div. - Not working - Try to fix. 
-        var divWidth = $('#' + deviceIdArray[i].device_id).width();
-        var divHeight = $('#' + deviceIdArray[i].device_id).height();
-
-
-        //How the divs will be structured.
-        $('<div id=' + deviceIdArray[i].device_id + ' class="petContainer"><h2 class="petHeader">' + deviceIdArray[i].name + '</h2><img src=https://digital-pet.herokuapp.com/images/' + deviceIdArray[i].pet_type + '/idle/' + deviceIdArray[i].pet_type + '.gif' + ' alt="Digital pet" height="200" width="200"></div>').appendTo("body").css({
-            left: left,
-            top: top
-        });
-
-
-
-
-        /*
-                //Check if created div exists in body.
-                var divExists = document.getElementById(deviceIdArray[i].device_id);
-
-                if (divExists) {
-                    console.log('Div:' + deviceIdArray[i].device_id + ' exists in body.');
-
-                } else {
-                    console.log('Div is not found in body.');
-                }
-
-            }
-        */
-
-        /*
-                
-
-                //How the divs will be structured.
-                $('<div id=' + deviceIdArray[i].device_id + ' class="petContainer"><h2 class="petHeader">' + deviceIdArray[i].name + '</h2><img src=https://digital-pet.herokuapp.com/images/' + deviceIdArray[i].pet_type + '/idle/' + deviceIdArray[i].pet_type + '.gif' + ' alt="Digital pet" height="200" width="200"></div>').appendTo("body").css({
-                    left: left,
-                    top: top
-                });
-                */
-
-        //random div position testing
-        /*
-        var width = $(window).width();
-        var height = $(window).height();
-
-        var left = Math.floor(Math.random() * (width - divWidth));
-        var top = Math.floor(Math.random() * (height - divHeight));
-        */
-
-        /*
-        var randPosX = Math.floor((Math.random() * bodyWidth -200));
-        var randPosY = Math.floor((Math.random() * bodyHeight));
-        console.log("height: " + bodyHeight + " width: " + bodyWidth);
-        console.log("X: " + randPosX + " Y: " + randPosY);
-
-        $('#' + deviceIdArray[i].device_id).css('left', randPosX);
-        $('#' + deviceIdArray[i].device_id).css('top', randPosY);
-        */
-
-
-
-        /*
-            function AnimateIt() {
-                var theDiv = $('#' + deviceIdArray[i].device_id),
-                    maxLeft = $(window).width() - theDiv.width(),
-                    maxTop = $(window).height() - theDiv.height(),
-                    leftPos = Math.floor(Math.random() * maxLeft),
-                    topPos = Math.floor(Math.random() * maxTop);
-                
-                    if (theDiv.position().left < leftPos) {
-            theDiv.removeClass("left").addClass("right");
-        } else {
-            theDiv.removeClass("right").addClass("left");
-        }
-
-                theDiv.animate({
-                    "left": leftPos,
-                    "top": topPos
-                }, 1200, AnimateIt);
-            }*/
-
-
-
-
-
-
-
-    }
-
-});
-
-
-socket.on("removePet", function (data) {
-    console.log(data);
-    /*
-                //Removes specific object from array:
-                var DeviceId = data.device_id;
-
-                //Filtered deviceIdArray
-                var filtered = deviceIdArray.filter(function (arrayData) {
-                    //console.log(arrayData.device_id);
-                    return arrayData.device_id != DeviceId
-
-                });
-    
-                console.log(filtered);
-*/
-
-    var element = document.body;
-    var child = document.getElementById(data.device_id);
-    element.removeChild(child);
-
-});
-
-
-
-
-
-
-//Function for hiding the cursor when idle.
+//Function for hiding the cursor when idle, runs when the page is loading (window.onload).
 window.onload = function () {
     var justHidden = false;
     var j;
@@ -178,5 +22,107 @@ window.onload = function () {
             j = setTimeout(hide, 1000);
         }
     });
-
 };
+
+
+var socket = io();
+
+// Socket for the pet-delivery (contains passed data from the server-response).
+socket.on("deliverPet", function (data) {
+
+    var dataArray = []; // Array holding the data from the "data"-parameter.
+
+    dataArray.push(data); // Pushes data into the dataArray.
+
+
+    //Function for looping out divs containing desired data.
+    function loopPetDivs() {
+        // For-loop for looping out divs with JSON-data on random coordinates inside the "body"-element.
+        for (var i = 0; i < dataArray.length; i++) {
+            console.log(dataArray[i]);
+
+            // Gets the width and height of the browser-window.
+            var windowHeight = $(window).height();
+            var windowWidth = $(window).width();
+
+            /* Generates random height and width coordinates of the window
+            and subtracts the size of the div so it doesn't spawn outside the visible browser-window. */
+            var top = Math.floor(Math.random() * (windowHeight - 250));
+            var left = Math.floor(Math.random() * (windowWidth - 200));
+
+            // How the looped divs will be structured.
+            $('<div id=' + dataArray[i].qr_code + ' class="petContainer"><h2 class="petHeader">' + dataArray[i].name + '</h2><img src=https://diggiepet.herokuapp.com/images/' + dataArray[i].pet_type + '/idle/' + dataArray[i].pet_type + '.gif' + ' alt="Digital pet" height="200" width="200"></div>').appendTo("body").css({
+                left: left,
+                top: top
+            });
+        }
+    }
+
+    loopPetDivs(); // Calls the function.
+
+
+    // Function for playing unique animations for each of the pet-objects, made with a for-loop.
+    function loopPetAnimations() {
+        for (var i = 0; i < dataArray.length; i++) {
+            var currentPetData = dataArray[i];
+
+            animateDiv(currentPetData); // Passes "currentPetData" to the "animateDiv"-function for the data to be accessed.
+        }
+    }
+
+    loopPetAnimations(); // Calls the function.
+
+    // Function for generating a new random location for the div in the "animateDiv"-function.
+    function makeNewPosition() {
+
+        /* Gets viewport dimensions (browser window) then removes the dimension of the div
+        to prevent it from moving outside the visible window. */
+        var h = $(window).height() - 200;
+        var w = $(window).width() - 250;
+
+        var nh = Math.floor(Math.random() * h);
+        var nw = Math.floor(Math.random() * w);
+
+        return [nh, nw];
+
+    }
+
+    /* Function for animating the divs, 
+    calls the "loopPetAnimations"-function again for continued moving-animations. */ 
+    function animateDiv(petData) {
+        var newq = makeNewPosition();
+        var oldq = $('#' + petData.qr_code).offset();
+        var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+        $('#' + petData.qr_code).animate({
+            top: newq[0],
+            left: newq[1]
+        }, speed, function () {
+            loopPetAnimations();
+        });
+    };
+
+    // Function for modifying the speed of the moving-animations.
+    function calcSpeed(prev, next) {
+
+        var x = Math.abs(prev[1] - next[1]);
+        var y = Math.abs(prev[0] - next[0]);
+
+        var greatest = x > y ? x : y;
+
+        var speedModifier = 0.1;
+
+        var speed = Math.ceil(greatest / speedModifier);
+
+        return speed;
+    }
+});
+
+// Socket for the pet-removal (contains passed data from the server-response).
+socket.on("removePet", function (data) {
+    console.log(data);
+    /* Removes the element (div) with the id corresponding to the value of the "qr_code"-key in the passed data-object. */
+    var element = document.body;
+    var child = document.getElementById(data.qr_code);
+    element.removeChild(child);
+});

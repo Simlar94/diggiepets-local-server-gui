@@ -1,48 +1,16 @@
 body {
-    /*padding-top: 5rem;*/
-    background: #4F545B !important;
-    /*background: #000000 !important;*/
+    background: #000000 !important;
     text-align: center;
     overflow: hidden;
 }
-
-
-
-#headCol {
-    text-align: center;
-}
-
-#mainHeader {
-    color: #FFFFFF;
-    text-shadow: 2px 2px #000000;
-}
-
-#headRow {
-    margin-top: 2%;
-}
-
-#petitems {
-    height: 100vh;
-    /*height: 100%;
-    display: flex;*/
-}
-
-#myCanvas {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    visibility: hidden;
-}
-
+/* Unused CSS "heartbeat"-animation */
 @keyframes beat {
     to {
         transform: scale(1.1);
     }
 }
 
+/* Styles for all the pet-div-headers */
 .petHeader {
     color: #FFFFFF;
     text-shadow: 2px 2px #000000;
@@ -51,33 +19,11 @@ body {
     transform-origin: center;
 }
 
-
-
-@keyframes move {
-
-    0% {
-        transform: translate(0);
-        opacity: 1;
-    }
-
-    50% {
-        transform: translate(1100px);
-        opacity: 1;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-/*Class for the styles in common for all the looped pet-divs*/
-
+/* Class for the styles in common for all the looped pet-divs. */
 .petContainer {
-    /*animation: move 10s linear infinite; */
     text-align: center;
     width: auto;
     height: auto;
-    /*flex: 1;*/
     position: absolute;
     z-index: 1;
 }
-
