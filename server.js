@@ -32,7 +32,7 @@ zbar.stdout.on("data", function (buf) {
             Authorization: "Basic ZGlnZ2llcGV0X2FkbWluOmRpZ2dpZXBldDEyMzQ1Njc4OTA="
         },
         form: {
-            "qr_code": "W1GGVUBljy1558438809838"
+            "qr_code": fixedString
         }
     }, function (err, response, body) {
         var obj = JSON.parse(body); // Parses the response (body) to a JSON-object then stores it in the variable "obj".

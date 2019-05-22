@@ -35,7 +35,7 @@ socket.on("deliverPet", function (data) {
 
     var dataArray = []; // Holds the data from the "data"-parameter (JSON-objects).
 
-    dataArray.push(data, fakeObj); // Pushes data (JSON-objects) into the dataArray.
+    dataArray.push(data); // Pushes data (JSON-objects) into the dataArray.
 
     //Function for looping out divs containing desired data.
     function loopPetDivs() {
