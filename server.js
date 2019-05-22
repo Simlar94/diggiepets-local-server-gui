@@ -35,8 +35,7 @@ zbar.stdout.on("data", function (buf) {
             "qr_code": "W1GGVUBljy1558438809838"
         }
     }, function (err, response, body) {
-        var obj = JSON.parse(body); // Parses the response (body) to a JSON-object, stores it in the variable "obj".
-
+        var obj = JSON.parse(body); // Parses the response (body) to a JSON-object then stores it in the variable "obj".
         // If-statement containing another if-statement, executes code block depending on the server response.
         if (!err) {
             // If-statement with different conditions depending on the value of the "status"-key in the responded object.

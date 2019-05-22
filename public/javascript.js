@@ -1,4 +1,4 @@
-//Function for hiding the cursor when idle, runs when the page is loading (window.onload).
+// Function for hiding the cursor when idle, runs when the page-window is loading (window.onload).
 window.onload = function () {
     var justHidden = false;
     var j;
@@ -24,31 +24,33 @@ window.onload = function () {
     });
 };
 
+/* Code for the main GUI-functions.
+=================================================================================== */
 
 var socket = io();
 
-// Socket for the pet-delivery (contains passed data from the server-response).
+/* Socket for the pet-delivery (contains passed data from the server-response).  
+========================================================== */
 socket.on("deliverPet", function (data) {
 
-    var dataArray = []; // Array holding the data from the "data"-parameter.
+    var dataArray = []; // Holds the data from the "data"-parameter (JSON-objects).
 
-    dataArray.push(data); // Pushes data into the dataArray.
-
+    dataArray.push(data, fakeObj); // Pushes data (JSON-objects) into the dataArray.
 
     //Function for looping out divs containing desired data.
     function loopPetDivs() {
-        // For-loop for looping out divs with JSON-data on random coordinates inside the "body"-element.
+        // For-loop for looping out divs with JSON-objects from the "dataArray" on random coordinates inside the "body"-element.
         for (var i = 0; i < dataArray.length; i++) {
             console.log(dataArray[i]);
 
             // Gets the width and height of the browser-window.
-            var windowHeight = $(window).height();
-            var windowWidth = $(window).width();
+            var windowHeight = $(window).height() - 250;
+            var windowWidth = $(window).width() - 200;
 
             /* Generates random height and width coordinates of the window
             and subtracts the size of the div so it doesn't spawn outside the visible browser-window. */
-            var top = Math.floor(Math.random() * (windowHeight - 250));
-            var left = Math.floor(Math.random() * (windowWidth - 200));
+            var top = Math.floor(Math.random() * windowHeight);
+            var left = Math.floor(Math.random() * windowWidth);
 
             // How the looped divs will be structured.
             $('<div id=' + dataArray[i].qr_code + ' class="petContainer"><h2 class="petHeader">' + dataArray[i].name + '</h2><img src=https://diggiepet.herokuapp.com/images/' + dataArray[i].pet_type + '/idle/' + dataArray[i].pet_type + '.gif' + ' alt="Digital pet" height="200" width="200"></div>').appendTo("body").css({
@@ -56,36 +58,32 @@ socket.on("deliverPet", function (data) {
                 top: top
             });
         }
-    }
+    };
 
     loopPetDivs(); // Calls the function.
-
 
     // Function for playing unique animations for each of the pet-objects, made with a for-loop.
     function loopPetAnimations() {
         for (var i = 0; i < dataArray.length; i++) {
             var currentPetData = dataArray[i];
-
             animateDiv(currentPetData); // Passes "currentPetData" to the "animateDiv"-function for the data to be accessed.
         }
-    }
+    };
 
     loopPetAnimations(); // Calls the function.
 
-    // Function for generating a new random location for the div in the "animateDiv"-function.
+    // Function for generating a new random position for the div in the "animateDiv"-function.
     function makeNewPosition() {
-
         /* Gets viewport dimensions (browser window) then removes the dimension of the div
         to prevent it from moving outside the visible window. */
-        var h = $(window).height() - 200;
-        var w = $(window).width() - 250;
+        var windowHeight = $(window).height() - 250;
+        var windowWidth = $(window).width() - 200;
 
-        var nh = Math.floor(Math.random() * h);
-        var nw = Math.floor(Math.random() * w);
+        var nh = Math.floor(Math.random() * windowHeight);
+        var nw = Math.floor(Math.random() * windowWidth);
 
         return [nh, nw];
-
-    }
+    };
 
     /* Function for animating the divs, 
     calls the "loopPetAnimations"-function again for continued moving-animations. */ 
@@ -115,10 +113,11 @@ socket.on("deliverPet", function (data) {
         var speed = Math.ceil(greatest / speedModifier);
 
         return speed;
-    }
+    };
 });
 
-// Socket for the pet-removal (contains passed data from the server-response).
+/* Socket for the pet-removal (contains passed data from the server-response).
+========================================================== */
 socket.on("removePet", function (data) {
     console.log(data);
     /* Removes the element (div) with the id corresponding to the value of the "qr_code"-key in the passed data-object. */
